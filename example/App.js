@@ -44,6 +44,7 @@ class App extends Component {
           tolerance={tolerance}
           globalMouse={isGlobal}
           allowClickWithoutSelected={false}
+          verticalItemOffset={2}
           duringSelection={this.handleSelecting}
           onSelectionClear={this.handleSelectionClear}
           onSelectionFinish={this.handleSelectionFinish}
