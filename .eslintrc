@@ -24,6 +24,13 @@
     "react/no-unused-prop-types": "off",
     "react/jsx-filename-extension": "off",
     "import/no-extraneous-dependencies": "off",
+    "max-len": ["error", 120, 2, {
+      "ignoreUrls": true,
+      "ignoreComments": false,
+      "ignoreRegExpLiterals": true,
+      "ignoreStrings": true,
+      "ignoreTemplateLiterals": true,
+    }],
   },
 }
 

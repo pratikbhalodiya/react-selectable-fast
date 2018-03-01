@@ -121,6 +121,7 @@ The `<SelectableGroup />` component accepts a few optional props:
 * `ignoreList` (Array) Array of ignored selectors.
 * `clickableClassName` (String) On elements with specified selector click item containing this element will be selected.
 * `tolerance` (Number) The amount of buffer to add around your `<SelectableGroup />` container, in pixels.
+* `verticalItemOffset` (Number) The vertical amount of offset to add around your `createSelectable(<WrappedComponent />)` container, in pixels.
 * `className` (String) Class of selectable group element.
 * `selectionModeClass` (String) Class indicating that there is more than 1 selected item. Defaults to 'in-selection-mode'.
 * `selectboxClassName` (String) Class of selectbox element.
