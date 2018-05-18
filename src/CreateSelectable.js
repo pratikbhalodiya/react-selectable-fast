@@ -96,6 +96,9 @@ const createSelectable = WrappedComponent => (
             ref={ref => {
               this.startCursor = ref
             }}
+            style={{
+              display: 'inline-block'
+            }}
           />
           <WrappedComponent
             {...this.props}
@@ -106,6 +109,9 @@ const createSelectable = WrappedComponent => (
           <span
             ref={ref => {
               this.endCursor = ref
+            }}
+            style={{
+              display: 'inline-block'
             }}
           />
         </span>
