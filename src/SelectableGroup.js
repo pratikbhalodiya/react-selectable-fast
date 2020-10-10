@@ -24,6 +24,7 @@ class SelectableGroup extends Component {
     deselectOnEsc: bool,
     resetOnStart: bool,
     disabled: bool,
+    verticalItemOffset: number,
     delta: number,
     /**
      * Scroll container selector
@@ -64,6 +65,7 @@ class SelectableGroup extends Component {
   static defaultProps = {
     component: 'div',
     tolerance: 0,
+    verticalItemOffset: 0,
     globalMouse: false,
     ignoreList: [],
     scrollSpeed: 0.25,
@@ -274,7 +276,12 @@ class SelectableGroup extends Component {
   }
 
   selectItems = (selectboxBounds, { click } = {}) => {
-    const { tolerance, enableDeselect, mixedDeselect } = this.props
+    const {
+      tolerance,
+      verticalItemOffset,
+      enableDeselect,
+      mixedDeselect,
+    } = this.props
     selectboxBounds.top += this.scrollContainer.scrollTop
     selectboxBounds.left += this.scrollContainer.scrollLeft
 
@@ -282,6 +289,7 @@ class SelectableGroup extends Component {
       this.processItem(
         item,
         tolerance,
+        verticalItemOffset,
         selectboxBounds,
         click,
         enableDeselect,
@@ -290,11 +298,55 @@ class SelectableGroup extends Component {
     }
   }
 
-  processItem(item, tolerance, selectboxBounds, click, enableDeselect, mixedDeselect) {
+  processItem(
+    item,
+    tolerance,
+    verticalItemOffset,
+    selectboxBounds,
+    click,
+    enableDeselect,
+    mixedDeselect,
+  ) {
     if (this.inIgnoreList(item.node)) {
       return null
     }
-    const isCollided = doObjectsCollide(selectboxBounds, item.bounds, tolerance, this.props.delta)
+
+    let itemBounds = item.bounds.slice()
+
+    if (
+      itemBounds.length === 3 &&
+      verticalItemOffset !== 0
+    ) {
+      itemBounds[2] = {
+        ...itemBounds[2],
+        top: itemBounds[2].top + (verticalItemOffset / 2),
+        offsetHeight: itemBounds[2].offsetHeight - verticalItemOffset,
+        computedHeight: itemBounds[2].computedHeight - verticalItemOffset,
+      }
+    }
+
+    itemBounds =
+      itemBounds
+        .filter(bounds => (
+          bounds.offsetWidth > 0 &&
+          bounds.offsetHeight > 0 &&
+          bounds.computedWidth > 0 &&
+          bounds.computedHeight > 0
+        ))
+
+    const isCollided =
+      itemBounds.length
+        ? itemBounds
+          .some(bounds => (
+            doObjectsCollide(
+              selectboxBounds,
+              bounds,
+              tolerance,
+              this.props.delta,
+            )
+          ))
+        : false
+
     const { selecting, selected } = item.state
 
     if (click && isCollided) {
